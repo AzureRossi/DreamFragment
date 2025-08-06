@@ -433,23 +433,16 @@
           <h2 class="title is-3">Abstract</h2>
           <div class="content has-text-justified">
             <p>
-              Image diffusion models have been adapted for real-world video super-resolution to tackle over-smoothing
-              issues in GAN-based methods.
-              However, these models struggle to maintain temporal consistency, as they are trained on static images,
-              limiting their ability to capture temporal dynamics effectively.
-              Integrating text-to-video (T2V) models into video super-resolution for improved temporal modeling is
-              straightforward.
-              However, two key challenges remain: artifacts introduced by complex degradations in real-world scenarios,
-              and compromised fidelity due to the strong generative capacity of powerful T2V models (e.g.,
-              CogVideoX-5B).
-              To enhance the spatio-temporal quality of restored videos, we introduce <b>STAR</b>
-              (<b>S</b>patial-<b>T</b>emporal <b>A</b>ugmentation with T2V models for <b>R</b>eal-world video
-              super-resolution), a novel approach that leverages T2V models for real-world video super-resolution,
-              achieving realistic spatial details and robust temporal consistency.
-              Specifically, we introduce a Local Information Enhancement Module (LIEM) before the global attention block
-              to enrich local details and mitigate degradation artifacts.
-              Moreover, we propose a Dynamic Frequency (DF) Loss to reinforce fidelity, guiding the model to focus on
-              different frequency components across diffusion steps.
+              Despite recent advances in text-conditioned 3D generation,
+              compositional multi-object scene generation remains challenging, particularly when modeling complex object interactions (e.g. A bird is perched on a tree branch). Existing methods typically struggle with realistic interactions due
+              to overly coarse modeling of inter-object relations and spatial arrangements. We address these limitations by enhancing
+              fine-grained instance relation modeling throughout the generation pipeline. Our approach features an instance-aware initialization strategy, which leverages the holistic scene generation capabilities of feed-forward reconstruction models, e.g. 
+              Large Multi-View Gaussian Model (LGM). Meanwhile, the strategy also maintains instance separability throughout the
+              full scene generation process. We incorporate an instance-aware diffusion prior to effectively alleviate the limitations
+              of Score Distillation Sampling-based (SDS-based) methods in modeling multi-object spatial relationships. Additionally,
+              we integrate Neural Category Field into 3D Gaussian Splatting for fine-grained layout representation, reducing object-intersecting artifacts common in previous approaches. Extensive experiments validate the effectiveness of our method,
+              which achieves state-of-the-art performance in both visual
+              quality and quantitative metrics for generating realistic multi-object scenes with complex interactions.
             </p>
           </div>
         </div>
@@ -466,12 +459,18 @@
           <h2 class="title is-3">Method</h2>
           <div class="content has-text-justified">
             <p>
-              STAR includes four modules: VAE, text encoder, ControlNet, and T2V model with <b>Local Information
-                Enhancement Module (LIEM)</b> designed to alleviate the artifacts.
-              <b>Dynamic Frequency (DF) Loss</b> is introduced to adaptively adjust the constraint on high- and
-              low-frequency components across diffusion steps.
-              With the proposed LIEM and DF loss, STAR achieves high spatio-temporal quality, reduced artifacts and
-              enhanced fidelity.
+              DreamFragment includes three modules: Instance-Aware initialization with <b>pixel-to-feature Gaussian Segmentation</b>, 
+              Layout Optimization with <b>Category Field Guided Rendering & instance-aware diffusion prior</b>,
+              and Appearance Refinement with <b>Boundary-Aware Pruning</b>.
+              <br>
+              Using 3D Gaussian as the 3D representation, our method,
+              DreamFragment, follows the typical initialization-then optimization framework for compositional multi-object generation. 
+              The overall pipeline of our approach is illustrated in Fig. 2. Given the input text description, 
+              our DreamFragment first initializes the 3D Gaussians of individual instances by <b>a novel instance-aware initialization strategy</b>.
+              Based on the coarse spatial structure and position of each instance, DreamFragment proceeds through a two-stage optimization process, 
+              comprising layout optimization and appearance refinement.
+              With the proposed fine-grained instance relation modeling throughout the generation process, 
+              DreamFragment achieves state-of-the-art performance in both visual quality and quantitative metrics.
             </p>
             <div class="column">
               <img src="./assets/images/overview_01.png" />
@@ -513,7 +512,7 @@
               Quantitative Comparison
             </p>
             <div class="column">
-              <img src="./assets/images/comparison.png" />
+              <img src="./assets/images/comparison.pdf" />
             </div>
           </div>
 
