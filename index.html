@@ -815,6 +815,15 @@
       // $(".twentytwenty-container", "#results-carousel").twentytwenty({default_offset_pct: 0.5, ratio: 0.5});
     });
   </script>
+  <script>
+  window.addEventListener('load', function () {
+    // 初始化所有twentytwenty容器
+    $(".twentytwenty-container").twentytwenty({
+      default_offset_pct: 0.5, // 初始拖动条位置
+      orientation: 'horizontal', // 水平对比
+    });
+  });
+</script>
 </body>
 
 </html>
