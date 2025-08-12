@@ -41,22 +41,26 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./assets/css/index.css">
   <link rel="stylesheet" href="./assets/css/style.css">
-  <link rel="stylesheet" href="./assets/css/twentytwenty.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/foundation.min.css">
   <!-- <link rel="stylesheet" href="./assets/css/all.min.css"> -->
   <link rel="stylesheet" href="./assets/css/clarity.css">
   <link rel="stylesheet" href="./assets/css/slider.css">
   <!-- <link rel="stylesheet" href="./assets/css/main.free.css"> -->
   <script defer src="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js"></script>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="./assets/js/fontawesome.all.min.js"></script>
+<script defer src="./assets/js/fontawesome.all.min.js"></script>
   <!-- <script src="./assets/js/video-control.js" defer></script> -->
 
   <!-- <script src="./assets/js/bulma-carousel.min.js"></script>
   <script src="./assets/js/bulma-slider.min.js"></script>
   <script src="./assets/js/index.js"></script> -->
+  <link rel="stylesheet" href="./assets/css/twentytwenty.css">
+
+  <style>
+    .twentytwenty-container,
+    .twentytwenty-container * { box-sizing: border-box; }
+    .twentytwenty-container img { display:block; width:100%; height:auto; }
+  </style>
 </head>
 
 <body>
@@ -793,48 +797,71 @@
 
   <!-- custom js file  -->
   <!-- <script defer src="./assets/js/fontawesome.all.min.js"></script> -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="./assets/js/bulma-carousel.min.js"></script>
+<script src="./assets/js/bulma-carousel.min.js"></script>
   <script src="./assets/js/bulma-slider.min.js"></script>
   <script src="./assets/js/index.js"></script>
   <script src="./assets/js/jquery.event.move.js"></script>
   <script src="./assets/js/jquery.twentytwenty.js"></script>
+  
   <script>
-    // 仅在可见时初始化，避免轮播里宽度为 0
-    function initTwentyTwenty(el) {
-      if (el.dataset.ttInit) return;
-      $(el).twentytwenty({
-        default_offset_pct: 0.5,
-        orientation: 'horizontal'
-      });
-      el.dataset.ttInit = '1';
+  (function(){
+    function waitImages(el){
+      var imgs = Array.from(el.querySelectorAll('img'));
+      if (imgs.length < 2) return Promise.reject(new Error('Need two images'));
+      return Promise.all(imgs.map(function(img){
+        return new Promise(function(res){
+          if (img.complete) return res();
+          img.addEventListener('load', res, {once:true});
+          img.addEventListener('error', res, {once:true});
+        });
+      }));
     }
-
-    window.addEventListener('load', function () {
-      const els = document.querySelectorAll('.twentytwenty-container');
-
-      const io = 'IntersectionObserver' in window
-        ? new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                initTwentyTwenty(entry.target);
-                // 修正把手位置
-                setTimeout(() => $(window).trigger('resize'), 0);
-                io.unobserve(entry.target);
-              }
-            });
-          }, { threshold: 0.2 })
-        : null;
-
-      els.forEach(el => {
-        if (el.offsetParent !== null) initTwentyTwenty(el);
-        else if (io) io.observe(el);
+    function initTwentyTwenty(el){
+      if (!el || el.dataset.ttInit) return;
+      waitImages(el).then(function(){
+        if (el.offsetParent === null) return; // not visible, IO will handle
+        jQuery(el).twentytwenty({
+          default_offset_pct: 0.5,
+          orientation: el.dataset.orientation || 'horizontal'
+        });
+        el.dataset.ttInit = '1';
+        setTimeout(function(){ jQuery(window).trigger('resize'); }, 0);
       });
-
-      window.addEventListener('resize', () => $(window).trigger('resize'));
+    }
+    function initVisible(){
+      document.querySelectorAll('.twentytwenty-container').forEach(function(el){
+        if (el.offsetParent !== null) initTwentyTwenty(el);
+      });
+    }
+    window.addEventListener('load', function(){
+      var els = document.querySelectorAll('.twentytwenty-container');
+      if ('IntersectionObserver' in window){
+        var io = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            if (entry.isIntersecting) initTwentyTwenty(entry.target);
+          });
+        }, {threshold: 0.2});
+        els.forEach(function(el){ io.observe(el); });
+      } else {
+        initVisible();
+      }
+      // If bulmaCarousel is present, re-init when slides change
+      try{
+        var c = document.getElementById('results-carousel');
+        if (c && window.bulmaCarousel){
+          var insts = window.bulmaCarousel.attach('#results-carousel', {});
+          var inst = Array.isArray(insts) ? insts[0] : insts;
+          if (inst && inst.on){
+            inst.on('after:show', function(){ initVisible(); setTimeout(function(){ jQuery(window).trigger('resize'); }, 0); });
+          } else {
+            c.addEventListener('after:show', function(){ initVisible(); setTimeout(function(){ jQuery(window).trigger('resize'); }, 0); });
+          }
+        }
+      }catch(e){}
+      window.addEventListener('resize', function(){ jQuery(window).trigger('resize'); });
     });
+  })();
   </script>
-
 </body>
 
 </html>
