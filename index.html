@@ -250,7 +250,7 @@
   <section class="hero is-light is-small">
     <div class="hero-body">
       <div class="columns is-centered has-text-centered">
-        <h2 class="title is-3">Real-World Videos (upscale &times4)</h2>
+        <h2 class="title is-3">Showcases</h2>
       </div>
       <div class="container">
         <div id="results-carousel" class="carousel results-carousel">
@@ -388,11 +388,11 @@
           <div class="content has-text-justified">
             <div class="content" style="text-align: center;">
               <br>
-              <b>STAR</b> is a Spatio-Temporal quality Augmentation framework for Real-world VSR,
+              <b>DreamFragment</b> is a Fine-Grained Instance Relation Modeling text-conditioned 3D generation framework for compositional multi-object scene generation,
               <br>
               which is the <span
                 style="color: #EA4335; border-bottom: 2px solid #EA4335; display: inline-block;">first</span></b> to
-              integrate diverse, powerful text-to-video diffusion priors into real-world VSR.
+              integrate an instance-aware diffusion prior into multi-object scene generation framework.
             </div>
             <div class="hr"></div>
           </div>
@@ -527,7 +527,7 @@
           </style>
 
 
-          <div class="container blog extra-large white">
+          <!-- <div class="container blog extra-large white">
             <div class="slide-menu" style="margin-bottom: 60px;">
               <ul class="dots" id="slide-menu-2"
                 style="display: flex; justify-content: center; gap: 70px; flex-wrap: wrap;">
@@ -692,7 +692,7 @@
 
 
 
-          </div>
+          </div> -->
 
 
         </div>
@@ -793,26 +793,47 @@
 
   <!-- custom js file  -->
   <!-- <script defer src="./assets/js/fontawesome.all.min.js"></script> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="./assets/js/bulma-carousel.min.js"></script>
   <script src="./assets/js/bulma-slider.min.js"></script>
   <script src="./assets/js/index.js"></script>
   <script src="./assets/js/jquery.event.move.js"></script>
   <script src="./assets/js/jquery.twentytwenty.js"></script>
   <script>
-    $(function () {
-      $(".twentytwenty-container").twentytwenty();
-      // $(".twentytwenty-container", "#results-carousel").twentytwenty({default_offset_pct: 0.5, ratio: 0.5});
+    // 仅在可见时初始化，避免轮播里宽度为 0
+    function initTwentyTwenty(el) {
+      if (el.dataset.ttInit) return;
+      $(el).twentytwenty({
+        default_offset_pct: 0.5,
+        orientation: 'horizontal'
+      });
+      el.dataset.ttInit = '1';
+    }
+
+    window.addEventListener('load', function () {
+      const els = document.querySelectorAll('.twentytwenty-container');
+
+      const io = 'IntersectionObserver' in window
+        ? new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                initTwentyTwenty(entry.target);
+                // 修正把手位置
+                setTimeout(() => $(window).trigger('resize'), 0);
+                io.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.2 })
+        : null;
+
+      els.forEach(el => {
+        if (el.offsetParent !== null) initTwentyTwenty(el);
+        else if (io) io.observe(el);
+      });
+
+      window.addEventListener('resize', () => $(window).trigger('resize'));
     });
   </script>
-  <script>
-  window.addEventListener('load', function () {
-    // 初始化所有twentytwenty容器
-    $(".twentytwenty-container").twentytwenty({
-      default_offset_pct: 0.5, // 初始拖动条位置
-      orientation: 'horizontal', // 水平对比
-    });
-  });
-</script>
 
 </body>
 
