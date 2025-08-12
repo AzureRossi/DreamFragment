@@ -61,6 +61,16 @@
     .twentytwenty-container * { box-sizing: border-box; }
     .twentytwenty-container img { display:block; width:100%; height:auto; }
   </style>
+
+  <style>
+    /* 让对比容器不占满全宽 */
+  .twentytwenty-container.tt-sm { max-width: 640px; margin: 0 auto; }
+  @media (max-width: 768px) { .twentytwenty-container.tt-sm { max-width: 90vw; } }
+
+  /* 兜底，防止外层样式影响显示 */
+  .twentytwenty-container, .twentytwenty-container * { box-sizing: border-box; }
+  .twentytwenty-container img { display: block; width: 100%; height: auto; }
+  </style>
 </head>
 
 <body>
@@ -261,8 +271,7 @@
 
           <div class="item">
           <div class="desc">A rabbit nibbling on a carrot.</div>
-          <div class="twentytwenty-container" data-orientation="horizontal"
-              style="max-width: 320px; margin: 0 auto;">
+          <div class="twentytwenty-container tt-sm" data-orientation="horizontal">
             <img src="./assets/images/trellis_rabbit.png" alt="Before">
             <img src="./assets/images/ours_rabbit.png"   alt="After">
           </div>
@@ -270,17 +279,15 @@
 
           <div class="item">
             <div class="desc">A rabbit nibbling on a carrot.</div>
-            <div class="twentytwenty-container" data-orientation="horizontal"
-                style="max-width: 320px; margin: 0 auto;">
+            <div class="twentytwenty-container tt-sm" data-orientation="horizontal">
               <img src="./assets/images/trellis_bear.png" alt="Before">
               <img src="./assets/images/ours_bear.png"   alt="After">
             </div>
           </div>
 
           <div class="item">
-            <div class="desc">A rabbit nibbling on a carrot.</div>
-            <div class="twentytwenty-container" data-orientation="horizontal"
-                style="max-width: 320px; margin: 0 auto;">
+            <div class="desc">A cat scratching a post.</div>
+            <div class="twentytwenty-container tt-sm" data-orientation="horizontal">
               <img src="./assets/images/trellis_post.png" alt="Before">
               <img src="./assets/images/ours_post.png"   alt="After">
             </div>
@@ -807,61 +814,63 @@
   <script src="./assets/js/jquery.twentytwenty.js"></script>
   
   <script>
-  (function(){
-    function waitImages(el){
-      var imgs = Array.from(el.querySelectorAll('img'));
-      if (imgs.length < 2) return Promise.reject(new Error('Need two images'));
-      return Promise.all(imgs.map(function(img){
-        return new Promise(function(res){
-          if (img.complete) return res();
-          img.addEventListener('load', res, {once:true});
-          img.addEventListener('error', res, {once:true});
-        });
-      }));
-    }
-    function initTwentyTwenty(el){
-      if (!el || el.dataset.ttInit) return;
-      waitImages(el).then(function(){
-        if (el.offsetParent === null) return; // not visible, IO will handle
-        jQuery(el).twentytwenty({
-          default_offset_pct: 0.5,
-          orientation: el.dataset.orientation || 'horizontal'
-        });
-        el.dataset.ttInit = '1';
-        setTimeout(function(){ jQuery(window).trigger('resize'); }, 0);
-      });
-    }
-    function initVisible(){
-      document.querySelectorAll('.twentytwenty-container').forEach(function(el){
-        if (el.offsetParent !== null) initTwentyTwenty(el);
-      });
-    }
-    window.addEventListener('load', function(){
-      var els = document.querySelectorAll('.twentytwenty-container');
-      if ('IntersectionObserver' in window){
-        var io = new IntersectionObserver(function(entries){
-          entries.forEach(function(entry){
-            if (entry.isIntersecting) initTwentyTwenty(entry.target);
+  (function () {
+    // 在某个节点内给所有未初始化的容器做一次初始化
+    function initTTIn(root) {
+      (root || document).querySelectorAll('.twentytwenty-container').forEach(function (el) {
+        if (el.dataset.ttInit) return;
+        var $el = window.jQuery && jQuery(el);
+        if (!$el || $el.find('img').length < 2) return;
+
+        // 图片加载完再初始化，避免高宽为 0
+        var imgs = $el.find('img').toArray();
+        Promise.all(imgs.map(function (img) {
+          return img.complete ? Promise.resolve() : new Promise(function (res) {
+            img.addEventListener('load', res, { once: true });
+            img.addEventListener('error', res, { once: true });
           });
-        }, {threshold: 0.2});
-        els.forEach(function(el){ io.observe(el); });
-      } else {
-        initVisible();
+        })).then(function () {
+          if (el.offsetParent === null) return; // 不可见时先不初始化
+          $el.twentytwenty({
+            default_offset_pct: 0.5,
+            orientation: el.dataset.orientation || 'horizontal'
+          });
+          el.dataset.ttInit = '1';
+          setTimeout(function () { jQuery(window).trigger('resize'); }, 0);
+        });
+      });
+    }
+
+    // 首次加载
+    window.addEventListener('load', function () {
+      if (typeof jQuery === 'undefined' || !jQuery.fn || !jQuery.fn.twentytwenty) {
+        console.error('twentytwenty 插件未加载'); return;
       }
-      // If bulmaCarousel is present, re-init when slides change
-      try{
-        var c = document.getElementById('results-carousel');
-        if (c && window.bulmaCarousel){
-          var insts = window.bulmaCarousel.attach('#results-carousel', {});
+      initTTIn(document);
+
+      // 轮播切换后再尝试初始化当前显示的 item
+      try {
+        if (window.bulmaCarousel) {
+          var insts = bulmaCarousel.attach('#results-carousel', {}); // 若已在别处 attach 过也没关系
           var inst = Array.isArray(insts) ? insts[0] : insts;
-          if (inst && inst.on){
-            inst.on('after:show', function(){ initVisible(); setTimeout(function(){ jQuery(window).trigger('resize'); }, 0); });
+          if (inst && inst.on) {
+            inst.on('after:show', function () {
+              initTTIn(document);
+              setTimeout(function () { jQuery(window).trigger('resize'); }, 0);
+            });
           } else {
-            c.addEventListener('after:show', function(){ initVisible(); setTimeout(function(){ jQuery(window).trigger('resize'); }, 0); });
+            // 兜底：监听 DOM 事件
+            var el = document.getElementById('results-carousel');
+            if (el) el.addEventListener('after:show', function () {
+              initTTIn(document);
+              setTimeout(function () { jQuery(window).trigger('resize'); }, 0);
+            });
           }
         }
-      }catch(e){}
-      window.addEventListener('resize', function(){ jQuery(window).trigger('resize'); });
+      } catch (e) { /* 忽略 */ }
+
+      // 窗口尺寸变化时也触发一次自适应
+      window.addEventListener('resize', function () { jQuery(window).trigger('resize'); });
     });
   })();
   </script>
