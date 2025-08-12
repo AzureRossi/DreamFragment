@@ -41,36 +41,22 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./assets/css/index.css">
   <link rel="stylesheet" href="./assets/css/style.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css" />
+  <link rel="stylesheet" href="./assets/css/twentytwenty.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/foundation.min.css">
   <!-- <link rel="stylesheet" href="./assets/css/all.min.css"> -->
   <link rel="stylesheet" href="./assets/css/clarity.css">
   <link rel="stylesheet" href="./assets/css/slider.css">
   <!-- <link rel="stylesheet" href="./assets/css/main.free.css"> -->
   <script defer src="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js"></script>
-<script defer src="./assets/js/fontawesome.all.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./assets/js/fontawesome.all.min.js"></script>
   <!-- <script src="./assets/js/video-control.js" defer></script> -->
 
   <!-- <script src="./assets/js/bulma-carousel.min.js"></script>
   <script src="./assets/js/bulma-slider.min.js"></script>
   <script src="./assets/js/index.js"></script> -->
-  <link rel="stylesheet" href="./assets/css/twentytwenty.css">
-
-  <style>
-    .twentytwenty-container,
-    .twentytwenty-container * { box-sizing: border-box; }
-    .twentytwenty-container img { display:block; width:100%; height:auto; }
-  </style>
-
-  <style>
-    /* 让对比容器不占满全宽 */
-  .twentytwenty-container.tt-sm { max-width: 640px; margin: 0 auto; }
-  @media (max-width: 768px) { .twentytwenty-container.tt-sm { max-width: 90vw; } }
-
-  /* 兜底，防止外层样式影响显示 */
-  .twentytwenty-container, .twentytwenty-container * { box-sizing: border-box; }
-  .twentytwenty-container img { display: block; width: 100%; height: auto; }
-  </style>
 </head>
 
 <body>
@@ -270,27 +256,36 @@
         <div id="results-carousel" class="carousel results-carousel">
 
           <div class="item">
-          <div class="desc">A rabbit nibbling on a carrot.</div>
-          <div class="twentytwenty-container tt-sm" data-orientation="horizontal">
-            <img src="./assets/images/trellis_rabbit.png" alt="Before">
-            <img src="./assets/images/ours_rabbit.png"   alt="After">
-          </div>
-        </div>
-
-          <div class="item">
-            <div class="desc">A rabbit nibbling on a carrot.</div>
-            <div class="twentytwenty-container tt-sm" data-orientation="horizontal">
-              <img src="./assets/images/trellis_bear.png" alt="Before">
-              <img src="./assets/images/ours_bear.png"   alt="After">
-            </div>
+            <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5625">
+              <div class="desc">A rabbit nibbling on a carrot.</div>
+              <div class="image">
+                <img src="./assets/images/trellis_rabbit.png" alt="Before" width="100%" />
+              </div>
+              <div class="image">
+                <img src="./assets/images/ours_rabbit.png" alt="After" width="100%" />
+              </div>
           </div>
 
           <div class="item">
+             <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5625">
+             <div class="desc">A teddy bear wearing a party hat.</div>
+             <div class="image">
+                <img src="./assets/images/trellis_bear.png" alt="Before" width="100%" />
+              </div>
+              <div class="image">
+                <img src="./assets/images/ours_bear.png" alt="After" width="100%" />
+              </div>
+          </div>
+
+          <div class="item">
+            <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5625">
             <div class="desc">A cat scratching a post.</div>
-            <div class="twentytwenty-container tt-sm" data-orientation="horizontal">
-              <img src="./assets/images/trellis_post.png" alt="Before">
-              <img src="./assets/images/ours_post.png"   alt="After">
-            </div>
+            <div class="image">
+                <img src="./assets/images/trellis_post.png" alt="Before" width="100%" />
+              </div>
+              <div class="image">
+                <img src="./assets/images/ours_post.png" alt="After" width="100%" />
+              </div>
           </div>
 
 
@@ -807,73 +802,48 @@
 
   <!-- custom js file  -->
   <!-- <script defer src="./assets/js/fontawesome.all.min.js"></script> -->
-<script src="./assets/js/bulma-carousel.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="./assets/js/bulma-carousel.min.js"></script>
   <script src="./assets/js/bulma-slider.min.js"></script>
   <script src="./assets/js/index.js"></script>
   <script src="./assets/js/jquery.event.move.js"></script>
   <script src="./assets/js/jquery.twentytwenty.js"></script>
-  
   <script>
-  (function () {
-    // 在某个节点内给所有未初始化的容器做一次初始化
-    function initTTIn(root) {
-      (root || document).querySelectorAll('.twentytwenty-container').forEach(function (el) {
-        if (el.dataset.ttInit) return;
-        var $el = window.jQuery && jQuery(el);
-        if (!$el || $el.find('img').length < 2) return;
-
-        // 图片加载完再初始化，避免高宽为 0
-        var imgs = $el.find('img').toArray();
-        Promise.all(imgs.map(function (img) {
-          return img.complete ? Promise.resolve() : new Promise(function (res) {
-            img.addEventListener('load', res, { once: true });
-            img.addEventListener('error', res, { once: true });
-          });
-        })).then(function () {
-          if (el.offsetParent === null) return; // 不可见时先不初始化
-          $el.twentytwenty({
-            default_offset_pct: 0.5,
-            orientation: el.dataset.orientation || 'horizontal'
-          });
-          el.dataset.ttInit = '1';
-          setTimeout(function () { jQuery(window).trigger('resize'); }, 0);
-        });
+    // 仅在可见时初始化，避免轮播里宽度为 0
+    function initTwentyTwenty(el) {
+      if (el.dataset.ttInit) return;
+      $(el).twentytwenty({
+        default_offset_pct: 0.5,
+        orientation: 'horizontal'
       });
+      el.dataset.ttInit = '1';
     }
 
-    // 首次加载
     window.addEventListener('load', function () {
-      if (typeof jQuery === 'undefined' || !jQuery.fn || !jQuery.fn.twentytwenty) {
-        console.error('twentytwenty 插件未加载'); return;
-      }
-      initTTIn(document);
+      const els = document.querySelectorAll('.twentytwenty-container');
 
-      // 轮播切换后再尝试初始化当前显示的 item
-      try {
-        if (window.bulmaCarousel) {
-          var insts = bulmaCarousel.attach('#results-carousel', {}); // 若已在别处 attach 过也没关系
-          var inst = Array.isArray(insts) ? insts[0] : insts;
-          if (inst && inst.on) {
-            inst.on('after:show', function () {
-              initTTIn(document);
-              setTimeout(function () { jQuery(window).trigger('resize'); }, 0);
+      const io = 'IntersectionObserver' in window
+        ? new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                initTwentyTwenty(entry.target);
+                // 修正把手位置
+                setTimeout(() => $(window).trigger('resize'), 0);
+                io.unobserve(entry.target);
+              }
             });
-          } else {
-            // 兜底：监听 DOM 事件
-            var el = document.getElementById('results-carousel');
-            if (el) el.addEventListener('after:show', function () {
-              initTTIn(document);
-              setTimeout(function () { jQuery(window).trigger('resize'); }, 0);
-            });
-          }
-        }
-      } catch (e) { /* 忽略 */ }
+          }, { threshold: 0.2 })
+        : null;
 
-      // 窗口尺寸变化时也触发一次自适应
-      window.addEventListener('resize', function () { jQuery(window).trigger('resize'); });
+      els.forEach(el => {
+        if (el.offsetParent !== null) initTwentyTwenty(el);
+        else if (io) io.observe(el);
+      });
+
+      window.addEventListener('resize', () => $(window).trigger('resize'));
     });
-  })();
   </script>
+
 </body>
 
 </html>
