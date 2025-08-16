@@ -255,6 +255,8 @@
       <div class="container">
         <div id="results-carousel" class="carousel results-carousel">
 
+
+<!-- 
           <div class="item">
             <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5625">
               <div class="desc">A rabbit nibbling on a carrot.</div>
@@ -286,7 +288,7 @@
               <div class="image">
                 <img src="./assets/images/ours_post.png" alt="After" width="100%" />
               </div>
-          </div>
+          </div> -->
 
 
           <!-- <div class="item">
@@ -536,173 +538,101 @@
           </style>
 
 
-          <!-- <div class="container blog extra-large white">
-            <div class="slide-menu" style="margin-bottom: 60px;">
-              <ul class="dots" id="slide-menu-2"
-                style="display: flex; justify-content: center; gap: 70px; flex-wrap: wrap;">
-                <li class="dot active" data-slide="0"><img class="card-img" src="./assets/images/gt005.png"
-                    alt="Slide 1" style="width: 80px; height: 50px;"></li>
-                <li class="dot" data-slide="1"><img class="card-img" src="./assets/images/gt006.png" alt="Slide 2"
-                    style="width: 80px; height: 50px;"></li>
-                <li class="dot" data-slide="2"><img class="card-img" src="./assets/images/gt008.png" alt="Slide 3"
-                    style="width: 80px; height: 50px;"></li>
-                <li class="dot" data-slide="3"><img class="card-img" src="./assets/images/gt016.png" alt="Slide 4"
-                    style="width: 80px; height: 50px;"></li>
-              </ul>
-            </div>
+<div class="container blog extra-large white">
+  <!-- The slider menu remains the same -->
+  <div class="slide-menu" style="margin-bottom: 60px;">
+    <ul class="dots" id="slide-menu-2" style="display: flex; justify-content: center; gap: 70px; flex-wrap: wrap;">
+      <li class="dot active" data-slide="0">
+        <img class="card-img" src="./assets/images/ours_bear.png" alt="Bear Comparison" style="width: 80px; height: 80px; object-fit: cover;">
+      </li>
+      <li class="dot" data-slide="1">
+        <img class="card-img" src="./assets/images/ours_rabbit.png" alt="Rabbit Comparison" style="width: 80px; height: 80px; object-fit: cover;">
+      </li>
+      <li class="dot" data-slide="2">
+        <img class="card-img" src="./assets/images/ours_post.png" alt="Post Comparison" style="width: 80px; height: 80px; object-fit: cover;">
+      </li>
+    </ul>
+  </div>
 
-            <div class="slide-content" data-slide="0" style="display: block;">
-              <div class="columns-4">
-                <figure style="text-align: center;">
-                  <video autoplay controls muted loop playsinline width="98%">
-                    <source src="./assets/videos/uav005.mp4" type="video/mp4">
-                  </video>
-                  <b>
-                    <figcaption style="margin-top: 8px; ">Upscale-A-Video<figcaption>
-                  </b>
-                </figure>
-                <figure style="text-align: center;">
-                  <video autoplay controls muted loop playsinline width="100%">
-                    <source src="./assets/videos/mgld005.mp4" type="video/mp4">
-                  </video>
-                  <b>
-                    <figcaption style="margin-top: 8px; ">MGLDVSR<figcaption>
-                  </b>
-                </figure>
-                <figure style="text-align: center;">
-                  <video autoplay controls muted loop playsinline width="100%">
-                    <source src="./assets/videos/rvf005.mp4" type="video/mp4">
-                  </video>
-                  <b>
-                    <figcaption style="margin-top: 8px; ">RealViformer<figcaption>
-                  </b>
-                </figure>
-                <figure style="text-align: center;">
-                  <video autoplay controls muted loop playsinline width="100%">
-                    <source src="./assets/videos/ours005.mp4" type="video/mp4">
-                  </video>
-                  <b>
-                    <figcaption style="margin-top: 8px; ">Ours<figcaption>
-                  </b>
-                </figure>
-              </div>
-            </div>
+  <!-- Slide 1: Bear Comparison -->
+  <div class="slide-content" data-slide="0" style="display: block;">
+    <!-- Image Row -->
+    <div class="columns is-centered is-vcentered">
+      <div class="column">
+        <figure style="text-align: center;">
+          <img src="./assets/images/trellis_bear.png" alt="Trellis Bear">
+        </figure>
+      </div>
+      <div class="column">
+        <figure style="text-align: center;">
+          <img src="./assets/images/ours_bear.png" alt="Ours Bear" style="width: 60%; height: auto; display: block; margin: 0 auto;">
+        </figure>
+      </div>
+    </div>
+    <!-- Label Row -->
+    <div class="columns is-centered">
+      <div class="column">
+        <p style="text-align: center;"><b>Trellis</b></p>
+      </div>
+      <div class="column">
+        <p style="text-align: center;"><b>Ours</b></p>
+      </div>
+    </div>
+  </div>
 
-            <div class="slide-content" data-slide="1" style="display: none;">
-              <div class="columns-4">
-                <figure style="text-align: center;">
-                  <video autoplay controls muted loop playsinline width="100%">
-                    <source src="./assets/videos/uav006.mp4" type="video/mp4">
-                  </video>
-                  <b>
-                    <figcaption style="margin-top: 8px; ">Upscale-A-Video<figcaption>
-                  </b>
-                </figure>
-                <figure style="text-align: center;">
-                  <video autoplay controls muted loop playsinline width="100%">
-                    <source src="./assets/videos/mgld006.mp4" type="video/mp4">
-                  </video>
-                  <b>
-                    <figcaption style="margin-top: 8px; ">MGLDVSR<figcaption>
-                  </b>
-                </figure>
-                <figure style="text-align: center;">
-                  <video autoplay controls muted loop playsinline width="100%">
-                    <source src="./assets/videos/rvf006.mp4" type="video/mp4">
-                  </video>
-                  <b>
-                    <figcaption style="margin-top: 8px; ">RealViformer<figcaption>
-                  </b>
-                </figure>
-                <figure style="text-align: center;">
-                  <video autoplay controls muted loop playsinline width="100%">
-                    <source src="./assets/videos/ours006.mp4" type="video/mp4">
-                  </video>
-                  <b>
-                    <figcaption style="margin-top: 8px; ">Ours<figcaption>
-                  </b>
-                </figure>
-              </div>
-            </div>
+  <!-- Slide 2: Rabbit Comparison -->
+  <div class="slide-content" data-slide="1" style="display: none;">
+    <!-- Image Row -->
+    <div class="columns is-centered is-vcentered">
+      <div class="column">
+        <figure style="text-align: center;">
+          <img src="./assets/images/trellis_rabbit.png" alt="Trellis Rabbit">
+        </figure>
+      </div>
+      <div class="column">
+        <figure style="text-align: center;">
+          <img src="./assets/images/ours_rabbit.png" alt="Ours Rabbit" style="width: 60%; height: auto; display: block; margin: 0 auto;">
+        </figure>
+      </div>
+    </div>
+    <!-- Label Row -->
+    <div class="columns is-centered">
+      <div class="column">
+        <p style="text-align: center;"><b>Trellis</b></p>
+      </div>
+      <div class="column">
+        <p style="text-align: center;"><b>Ours</b></p>
+      </div>
+    </div>
+  </div>
 
-            <div class="slide-content" data-slide="2" style="display: none;">
-              <div class="columns-4">
-                <figure style="text-align: center;">
-                  <video autoplay controls muted loop playsinline width="100%">
-                    <source src="./assets/videos/uav008.mp4" type="video/mp4">
-                  </video>
-                  <b>
-                    <figcaption style="margin-top: 8px; ">Upscale-A-Video<figcaption>
-                  </b>
-                </figure>
-                <figure style="text-align: center;">
-                  <video autoplay controls muted loop playsinline width="100%">
-                    <source src="./assets/videos/mgld008.mp4" type="video/mp4">
-                  </video>
-                  <b>
-                    <figcaption style="margin-top: 8px; ">MGLDVSR<figcaption>
-                  </b>
-                </figure>
-                <figure style="text-align: center;">
-                  <video autoplay controls muted loop playsinline width="100%">
-                    <source src="./assets/videos/rvf008.mp4" type="video/mp4">
-                  </video>
-                  <b>
-                    <figcaption style="margin-top: 8px; ">RealViformer<figcaption>
-                  </b>
-                </figure>
-                <figure style="text-align: center;">
-                  <video autoplay controls muted loop playsinline width="100%">
-                    <source src="./assets/videos/ours008.mp4" type="video/mp4">
-                  </video>
-                  <b>
-                    <figcaption style="margin-top: 8px; ">Ours<figcaption>
-                  </b>
-                </figure>
-              </div>
-            </div>
+  <!-- Slide 3: Post Comparison -->
+  <div class="slide-content" data-slide="2" style="display: none;">
+    <!-- Image Row -->
+    <div class="columns is-centered is-vcentered">
+      <div class="column">
+        <figure style="text-align: center;">
+          <img src="./assets/images/trellis_post.png" alt="Trellis Post">
+        </figure>
+      </div>
+      <div class="column">
+        <figure style="text-align: center;">
+          <img src="./assets/images/ours_post.png" alt="Ours Post" style="width: 60%; height: auto; display: block; margin: 0 auto;">
+        </figure>
+      </div>
+    </div>
+    <!-- Label Row -->
+    <div class="columns is-centered">
+      <div class="column">
+        <p style="text-align: center;"><b>Trellis</b></p>
+      </div>
+      <div class="column">
+        <p style="text-align: center;"><b>Ours</b></p>
+      </div>
+    </div>
+  </div>
 
-            <div class="slide-content" data-slide="3" style="display: none;">
-              <div class="columns-4">
-                <figure style="text-align: center;">
-                  <video autoplay controls muted loop playsinline width="100%">
-                    <source src="./assets/videos/uav016.mp4" type="video/mp4">
-                  </video>
-                  <b>
-                    <figcaption style="margin-top: 8px; ">Upscale-A-Video<figcaption>
-                  </b>
-                </figure>
-                <figure style="text-align: center;">
-                  <video autoplay controls muted loop playsinline width="100%">
-                    <source src="./assets/videos/mgld016.mp4" type="video/mp4">
-                  </video>
-                  <b>
-                    <figcaption style="margin-top: 8px; ">MGLDVSR<figcaption>
-                  </b>
-                </figure>
-                <figure style="text-align: center;">
-                  <video autoplay controls muted loop playsinline width="100%">
-                    <source src="./assets/videos/rvf016.mp4" type="video/mp4">
-                  </video>
-                  <b>
-                    <figcaption style="margin-top: 8px; ">RealViformer<figcaption>
-                  </b>
-                </figure>
-                <figure style="text-align: center;">
-                  <video autoplay controls muted loop playsinline width="100%">
-                    <source src="./assets/videos/ours016.mp4" type="video/mp4">
-                  </video>
-                  <b>
-                    <figcaption style="margin-top: 8px; ">Ours<figcaption>
-                  </b>
-                </figure>
-              </div>
-            </div>
-
-
-
-          </div> -->
-
+</div>
 
         </div>
   </section>
